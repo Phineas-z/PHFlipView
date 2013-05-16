@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ReadViewController.h"
 
 @implementation AppDelegate
 
@@ -20,6 +21,10 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
+    
+    ReadViewController* viewController = [[[ReadViewController alloc] init] autorelease];
+    self.window.rootViewController = viewController;
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
