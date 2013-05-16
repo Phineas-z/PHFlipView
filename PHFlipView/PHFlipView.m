@@ -11,7 +11,9 @@
 
 #define FRONT_POSITION 1000//Use this position to make layer front most
 #define MAX_FLIP_OFFSET 200
-#define FLIP_DURATION_FOR_M_PI .8
+#define FLIP_DURATION_FOR_M_PI 1.
+#define LAYER_CONTENTS_SCALE [UIScreen mainScreen].scale
+#define MAX_BOUNCE_PROGRESS .3
 
 @interface PHFlipView()<UIGestureRecognizerDelegate>
 //Current View
@@ -118,6 +120,7 @@
     frontLayer.doubleSided = NO;//
     frontLayer.contentsGravity = [self gravityForFrontLayerWithDirection:direction];
     frontLayer.masksToBounds = YES;
+    frontLayer.contentsScale = LAYER_CONTENTS_SCALE;
     
     backLayer.contents = nextLayerContents;
     backLayer.frame = self.flipCardLayer.bounds;
@@ -125,17 +128,20 @@
     backLayer.contentsGravity = [self gravityForBackLayerWithDirection:direction];
     backLayer.transform = [self initialTransformForBackLayerWithDirection:direction];
     backLayer.masksToBounds = YES;
+    backLayer.contentsScale = LAYER_CONTENTS_SCALE;
     
     //Set current and next background layer
     self.currentBackgroundLayer.contents = currentLayerContents;
     self.currentBackgroundLayer.frame = [self frameForCurrentBackgroundLayerWithDirection:direction];
     self.currentBackgroundLayer.contentsGravity = [self gravityForCurrentBackgroundLayerWithDirection:direction];
     self.currentBackgroundLayer.masksToBounds = YES;
+    self.currentBackgroundLayer.contentsScale = LAYER_CONTENTS_SCALE;
     
     self.nextBackgroundLayer.contents = nextLayerContents;
     self.nextBackgroundLayer.frame = [self frameForNextBackgroundLayerWithDirection:direction];
     self.nextBackgroundLayer.contentsGravity = [self gravityForNextBackgroundLayerWithDirection:direction];
     self.nextBackgroundLayer.masksToBounds = YES;
+    self.nextBackgroundLayer.contentsScale = LAYER_CONTENTS_SCALE;
     
     //Compose these widgets    
     [self.containerLayer addSublayer:self.currentBackgroundLayer];
@@ -150,7 +156,7 @@
 }
 
 -(void)flipCardDidDragToOffset:(CGFloat)offset{
-
+    
     float flipProgress = [self flipProgressWithGestureOffset:offset andDirection:self.currentFlipTransactionDirection];
     
     self.flipCardLayer.transform = [self flipCardTransformWithDirection:self.currentFlipTransactionDirection andProgress:flipProgress];    
@@ -371,7 +377,6 @@
     switch (direction) {
         case FLIP_UP:
             transform = CATransform3DRotate(transform, progress*M_PI, 1, 0, 0);
-            NSLog(@"%f", progress);
             break;
             
         case FLIP_DOWN:
@@ -393,7 +398,15 @@
     
     CGFloat currentOffset = MAX( MIN(offset, MAX_FLIP_OFFSET), 0 );
     
-    return currentOffset / MAX_FLIP_OFFSET;
+    float progress = currentOffset / MAX_FLIP_OFFSET;
+    
+    if (self.dataSource
+        && [self.dataSource respondsToSelector:@selector(flipView:shouldFlipToDirection:)]
+        && ![self.dataSource flipView:self shouldFlipToDirection:0]) {
+        progress = MAX_BOUNCE_PROGRESS;
+    }
+    
+    return progress;
 }
 
 -(UIView*)fetchNextViewWithDirection:(FLIP_DIRECTION)direction{

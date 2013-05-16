@@ -10,29 +10,18 @@
 
 @implementation UIView (Render)
 
-//-(UIImage *)imageByRenderingView{
-//    UIGraphicsBeginImageContext(self.bounds.size);
-//    
-//    CGContextRef context = UIGraphicsGetCurrentContext();
-//    
-//    [self.layer renderInContext:context];
-//    
-//    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
-//    
-//    UIGraphicsEndImageContext();
-//    
-//    return image;
-//}
-
-- (UIImage *) imageByRenderingView {
-    CGFloat oldAlpha = self.alpha;
-    self.alpha = 1;
-    UIGraphicsBeginImageContext(self.bounds.size);
-	[self.layer renderInContext:UIGraphicsGetCurrentContext()];
-	UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-    self.alpha = oldAlpha;
-	return resultingImage;
+-(UIImage *)imageByRenderingView{
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, 1, [UIScreen mainScreen].scale);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    [self.layer renderInContext:context];
+    
+    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 @end

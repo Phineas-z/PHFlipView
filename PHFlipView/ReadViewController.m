@@ -38,6 +38,10 @@
 
 #pragma mark - PHFlipViewDataSource
 -(BOOL)flipView:(PHFlipView*)flipView shouldFlipToDirection:(FLIP_DIRECTION)direction{
+    if ( self.currentPage == 1 && direction == FLIP_DOWN ) {
+        return NO;
+    }
+    
     return YES;
 }
 
