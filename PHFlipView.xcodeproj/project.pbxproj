@@ -20,8 +20,12 @@
 		9011A26F174358D200094CE2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9011A26E174358D200094CE2 /* QuartzCore.framework */; };
 		9011A27217435AB300094CE2 /* UIView+Render.m in Sources */ = {isa = PBXBuildFile; fileRef = 9011A27117435AB300094CE2 /* UIView+Render.m */; };
 		9011A27517435BDE00094CE2 /* PDFRendererView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9011A27417435BDE00094CE2 /* PDFRendererView.m */; };
-		9011A27717435C2300094CE2 /* ccrf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9011A27617435C2300094CE2 /* ccrf.pdf */; };
 		90BE4F10174605ED0012D989 /* PHFlipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BE4F0F174605ED0012D989 /* PHFlipView.m */; };
+		90BE4F1317460C3E0012D989 /* CoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BE4F1217460C3E0012D989 /* CoverView.m */; };
+		90BE4F1617460C580012D989 /* ContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BE4F1517460C580012D989 /* ContentView.m */; };
+		90BE4F1A174610640012D989 /* conan.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 90BE4F19174610640012D989 /* conan.pdf */; };
+		90BE4F1C17461A790012D989 /* cover_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 90BE4F1B17461A790012D989 /* cover_image.jpg */; };
+		90BE4F25174625020012D989 /* PHDarkLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BE4F24174625020012D989 /* PHDarkLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,9 +49,16 @@
 		9011A27117435AB300094CE2 /* UIView+Render.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Render.m"; sourceTree = "<group>"; };
 		9011A27317435BDE00094CE2 /* PDFRendererView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFRendererView.h; sourceTree = "<group>"; };
 		9011A27417435BDE00094CE2 /* PDFRendererView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFRendererView.m; sourceTree = "<group>"; };
-		9011A27617435C2300094CE2 /* ccrf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ccrf.pdf; sourceTree = SOURCE_ROOT; };
 		90BE4F0E174605ED0012D989 /* PHFlipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHFlipView.h; sourceTree = "<group>"; };
 		90BE4F0F174605ED0012D989 /* PHFlipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHFlipView.m; sourceTree = "<group>"; };
+		90BE4F1117460C3E0012D989 /* CoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverView.h; sourceTree = "<group>"; };
+		90BE4F1217460C3E0012D989 /* CoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverView.m; sourceTree = "<group>"; };
+		90BE4F1417460C580012D989 /* ContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentView.h; sourceTree = "<group>"; };
+		90BE4F1517460C580012D989 /* ContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentView.m; sourceTree = "<group>"; };
+		90BE4F19174610640012D989 /* conan.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = conan.pdf; sourceTree = "<group>"; };
+		90BE4F1B17461A790012D989 /* cover_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover_image.jpg; sourceTree = "<group>"; };
+		90BE4F23174625020012D989 /* PHDarkLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHDarkLayer.h; sourceTree = "<group>"; };
+		90BE4F24174625020012D989 /* PHDarkLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHDarkLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +111,10 @@
 				9011A25B1743518B00094CE2 /* AppDelegate.m */,
 				9011A26B1743581E00094CE2 /* ReadViewController.h */,
 				9011A26C1743581E00094CE2 /* ReadViewController.m */,
+				90BE4F1117460C3E0012D989 /* CoverView.h */,
+				90BE4F1217460C3E0012D989 /* CoverView.m */,
+				90BE4F1417460C580012D989 /* ContentView.h */,
+				90BE4F1517460C580012D989 /* ContentView.m */,
 				90BE4F0D174605ED0012D989 /* PHFlipView */,
 				9011A27817435D5700094CE2 /* Tool */,
 				9011A27A17435D7600094CE2 /* Resource */,
@@ -136,7 +151,8 @@
 		9011A27A17435D7600094CE2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				9011A27617435C2300094CE2 /* ccrf.pdf */,
+				90BE4F19174610640012D989 /* conan.pdf */,
+				90BE4F1B17461A790012D989 /* cover_image.jpg */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -146,6 +162,8 @@
 			children = (
 				90BE4F0E174605ED0012D989 /* PHFlipView.h */,
 				90BE4F0F174605ED0012D989 /* PHFlipView.m */,
+				90BE4F23174625020012D989 /* PHDarkLayer.h */,
+				90BE4F24174625020012D989 /* PHDarkLayer.m */,
 			);
 			path = PHFlipView;
 			sourceTree = "<group>";
@@ -206,7 +224,8 @@
 				9011A25E1743518B00094CE2 /* Default.png in Resources */,
 				9011A2601743518B00094CE2 /* Default@2x.png in Resources */,
 				9011A2621743518B00094CE2 /* Default-568h@2x.png in Resources */,
-				9011A27717435C2300094CE2 /* ccrf.pdf in Resources */,
+				90BE4F1A174610640012D989 /* conan.pdf in Resources */,
+				90BE4F1C17461A790012D989 /* cover_image.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +258,9 @@
 				9011A27217435AB300094CE2 /* UIView+Render.m in Sources */,
 				9011A27517435BDE00094CE2 /* PDFRendererView.m in Sources */,
 				90BE4F10174605ED0012D989 /* PHFlipView.m in Sources */,
+				90BE4F1317460C3E0012D989 /* CoverView.m in Sources */,
+				90BE4F1617460C580012D989 /* ContentView.m in Sources */,
+				90BE4F25174625020012D989 /* PHDarkLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,11 +8,14 @@
 
 #import "PHFlipView.h"
 #import "UIView+Render.h"
+#import "PHDarkLayer.h"
 
 #define FRONT_POSITION 1000 //Use this position to make layer front most
 #define MAX_FLIP_OFFSET 200 //Flip touch offset range [0, MAX_FLIP_OFFSET]
 #define FLIP_DURATION_FOR_M_PI 1. //Flip duration for M_PI
 #define MAX_BOUNCE_PROGRESS .3 //When there is no next page, can only flip less than 30% of M_PI
+#define PERSPECTIVE 1000.
+#define MAX_DARKNESS .7
 #define LAYER_CONTENTS_SCALE [UIScreen mainScreen].scale
 
 @interface PHFlipView()<UIGestureRecognizerDelegate>
@@ -29,8 +32,8 @@
 @property (nonatomic, retain) CATransformLayer* flipCardLayer;
 
 //Background layer
-@property (nonatomic, retain) CALayer* currentBackgroundLayer;
-@property (nonatomic, retain) CALayer* nextBackgroundLayer;
+@property (nonatomic, retain) PHDarkLayer* currentBackgroundLayer;
+@property (nonatomic, retain) PHDarkLayer* nextBackgroundLayer;
 
 //Current flip transaction direction
 @property (nonatomic) FLIP_DIRECTION currentFlipTransactionDirection;
@@ -155,8 +158,8 @@
     CALayer* frontLayer = [CALayer layer];
     CALayer* backLayer = [CALayer layer];
     
-    self.currentBackgroundLayer = [CALayer layer];
-    self.nextBackgroundLayer = [CALayer layer];
+    self.currentBackgroundLayer = [PHDarkLayer layer];
+    self.nextBackgroundLayer = [PHDarkLayer layer];
     
     //Set flipCardLayer
     self.flipCardLayer.anchorPoint = [self anchorPointForFlipContainerLayer];
@@ -208,9 +211,11 @@
 }
 
 -(void)flipCardDidDragToOffset:(CGPoint)offset{
-        
-    self.flipCardLayer.transform = [self flipCardTransformWithProgress:[self flipProgressWithGestureOffset:offset]];
+    float progress = [self flipProgressWithGestureOffset:offset];
     
+    self.flipCardLayer.transform = [self flipCardTransformWithProgress:progress];
+    
+    [self setBackgroundLayerDarknessWithProgress:progress];
 }
 
 -(void)flipCardDidEndDraggingWithCurrentOffset:(CGPoint)offset{
@@ -247,6 +252,11 @@
     }];
     
     self.flipCardLayer.transform = endTransform;
+    if (flipToNextPage) {
+        [self.currentBackgroundLayer setDarkness:MAX_DARKNESS];
+    }else{
+        [self.nextBackgroundLayer setDarkness:MAX_DARKNESS];
+    }
     
     [CATransaction commit];
 }
@@ -439,7 +449,7 @@
 //Flip card transform with progress
 -(CATransform3D)flipCardTransformWithProgress:(float)progress{
     CATransform3D transform = CATransform3DIdentity;
-    transform.m34 = -1. / 2500.;
+    transform.m34 = -1. / PERSPECTIVE;
     
     switch (self.currentFlipTransactionDirection) {
         case FLIP_UP:
@@ -540,6 +550,14 @@
         
         //Add the new one
         [self addSubview:_currentView];
+    }
+}
+
+-(void)setBackgroundLayerDarknessWithProgress:(float)progress{
+    if (progress<=0.5) {
+        [self.nextBackgroundLayer setDarkness: ( 1 - progress/0.5 ) * MAX_DARKNESS];
+    }else{
+        [self.currentBackgroundLayer setDarkness: ( progress/0.5 - 1 ) * MAX_DARKNESS];
     }
 }
 

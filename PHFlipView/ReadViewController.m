@@ -8,11 +8,13 @@
 
 #import "ReadViewController.h"
 #import "PHFlipView.h"
-#import "PDFRendererView.h"
+#import "CoverView.h"
+#import "ContentView.h"
 
 @interface ReadViewController()<PHFlipViewDataSource, PHFlipViewDelegate>
 @property (nonatomic, retain) PHFlipView* containerView;
 @property (nonatomic) NSInteger currentPage;
+@property (nonatomic) NSInteger maxPage;
 @end
 
 @implementation ReadViewController
@@ -26,11 +28,11 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    //
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    //CoverView for initial
+    CoverView* coverView = [[CoverView alloc] initWithFrame:self.view.bounds];
     
     //Add flip container view
-    self.containerView = [[PHFlipView alloc] initWithFrame:self.view.bounds andInitialView:[self pdfViewForPage:0]];
+    self.containerView = [[PHFlipView alloc] initWithFrame:self.view.bounds andInitialView:coverView];
     self.containerView.enableVerticalFlip = YES;
     self.containerView.enableHorizontalFlip = YES;
     self.containerView.dataSource = self;
@@ -48,27 +50,27 @@
 }
 
 -(UIView *)flipView:(PHFlipView*)flipView nextViewForFlipDirection:(FLIP_DIRECTION)direction{
-    UIView* viewToShow = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
-    UIToolbar* toolbar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(viewToShow.bounds), 30)] autorelease];
-    
     switch (direction) {
         case FLIP_DOWN:
         case FLIP_RIGHT:
-            [viewToShow addSubview:[self pdfViewForPage:self.currentPage-1]];
+            //Flip to previous page
+            if (self.currentPage == 1) {
+                return [[[CoverView alloc] initWithFrame:self.view.bounds] autorelease];
+            }else{
+                return [ContentView contentViewForPage:self.currentPage-2 withFrame:self.view.bounds];
+            }
             break;
             
         case FLIP_UP:
         case FLIP_LEFT:
-            [viewToShow addSubview:[self pdfViewForPage:self.currentPage+1]];
+            //Flip to succeeding page
+            return [ContentView contentViewForPage:self.currentPage withFrame:self.view.bounds];
             break;
             
         default:
+            return nil;
             break;
-    }
-    
-    [viewToShow addSubview:toolbar];
-
-    return viewToShow;
+    }    
 }
 
 #pragma mark - PHFlipViewDelegate
@@ -82,21 +84,6 @@
 
 -(void)flipView:(PHFlipView *)flipView cancelFlipToNewViewWithDirection:(FLIP_DIRECTION)direction{
     
-}
-
-//
--(UIView*)pdfViewForPage:(NSInteger)page{
-    NSURL* urlForResource = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ccrf" ofType:@"pdf"]];
-    CGPDFDocumentRef pdfDocument = CGPDFDocumentCreateWithURL((CFURLRef) CFBridgingRetain(urlForResource));
-    
-    PDFRendererView *result = [[PDFRendererView alloc] initWithFrame:self.view.bounds];
-	result.pdfDocument = pdfDocument;
-	result.pageNumber = page+1;
-    
-    CGPDFDocumentRelease(pdfDocument);
-    CFBridgingRelease(urlForResource);
-    
-	return result;
 }
 
 @end
