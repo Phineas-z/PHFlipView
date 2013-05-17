@@ -31,6 +31,8 @@
     
     //Add flip container view
     self.containerView = [[PHFlipView alloc] initWithFrame:self.view.bounds andInitialView:[self pdfViewForPage:0]];
+    self.containerView.enableVerticalFlip = YES;
+    self.containerView.enableHorizontalFlip = YES;
     self.containerView.dataSource = self;
     self.containerView.delegate = self;
     [self.view addSubview:self.containerView];
@@ -38,7 +40,7 @@
 
 #pragma mark - PHFlipViewDataSource
 -(BOOL)flipView:(PHFlipView*)flipView shouldFlipToDirection:(FLIP_DIRECTION)direction{
-    if ( self.currentPage == 1 && direction == FLIP_DOWN ) {
+    if ( self.currentPage == 0 && ( direction == FLIP_DOWN || direction == FLIP_RIGHT) ) {
         return NO;
     }
     
@@ -51,10 +53,12 @@
     
     switch (direction) {
         case FLIP_DOWN:
+        case FLIP_RIGHT:
             [viewToShow addSubview:[self pdfViewForPage:self.currentPage-1]];
             break;
             
         case FLIP_UP:
+        case FLIP_LEFT:
             [viewToShow addSubview:[self pdfViewForPage:self.currentPage+1]];
             break;
             
@@ -69,9 +73,9 @@
 
 #pragma mark - PHFlipViewDelegate
 -(void)flipView:(PHFlipView *)flipView didFlipToNewViewWithDirection:(FLIP_DIRECTION)direction{
-    if (direction == FLIP_UP) {
+    if (direction == FLIP_UP || direction == FLIP_LEFT) {
         self.currentPage++;
-    }else if (direction == FLIP_DOWN){
+    }else if (direction == FLIP_DOWN || direction == FLIP_RIGHT){
         self.currentPage--;
     }
 }
@@ -82,11 +86,15 @@
 
 //
 -(UIView*)pdfViewForPage:(NSInteger)page{
-    CGPDFDocumentRef pdfDocument = CGPDFDocumentCreateWithURL((CFURLRef) CFBridgingRetain([NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ccrf" ofType:@"pdf"]]));
+    NSURL* urlForResource = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ccrf" ofType:@"pdf"]];
+    CGPDFDocumentRef pdfDocument = CGPDFDocumentCreateWithURL((CFURLRef) CFBridgingRetain(urlForResource));
     
     PDFRendererView *result = [[PDFRendererView alloc] initWithFrame:self.view.bounds];
 	result.pdfDocument = pdfDocument;
 	result.pageNumber = page+1;
+    
+    CGPDFDocumentRelease(pdfDocument);
+    CFBridgingRelease(urlForResource);
     
 	return result;
 }

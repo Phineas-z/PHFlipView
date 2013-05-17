@@ -11,12 +11,20 @@
 typedef enum {
     FLIP_NONE,
     FLIP_UP,
-    FLIP_DOWN
+    FLIP_DOWN,
+    FLIP_LEFT,
+    FLIP_RIGHT
 }FLIP_DIRECTION;
 
 @protocol PHFlipViewDataSource;
 @protocol PHFlipViewDelegate;
 @interface PHFlipView : UIView
+
+@property (nonatomic, retain) UIView* backgroundView;
+
+@property (nonatomic) BOOL enableVerticalFlip;
+
+@property (nonatomic) BOOL enableHorizontalFlip;
 
 @property (nonatomic, assign) id<PHFlipViewDataSource> dataSource;
 
