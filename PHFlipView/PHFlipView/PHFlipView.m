@@ -252,11 +252,8 @@
     }];
     
     self.flipCardLayer.transform = endTransform;
-    if (flipToNextPage) {
-        [self.currentBackgroundLayer setDarkness:MAX_DARKNESS];
-    }else{
-        [self.nextBackgroundLayer setDarkness:MAX_DARKNESS];
-    }
+    
+    [self setBackgroundLayerDarknessWithProgress: flipToNextPage ? 1 : 0 ];
     
     [CATransaction commit];
 }
