@@ -10,7 +10,7 @@
 #import "UIView+Render.h"
 #import "PHDarkLayer.h"
 
-#define FRONT_POSITION 1000 //Use this position to make layer front most
+#define FRONT_POSITION 0 //Use this position to make layer front most
 #define MAX_FLIP_OFFSET 200 //Flip touch offset range [0, MAX_FLIP_OFFSET]
 #define FLIP_DURATION_FOR_M_PI 1. //Flip duration for M_PI
 #define MAX_BOUNCE_PROGRESS .3 //When there is no next page, can only flip less than 30% of M_PI
@@ -213,7 +213,10 @@
 -(void)flipCardDidDragToOffset:(CGPoint)offset{
     float progress = [self flipProgressWithGestureOffset:offset];
     
+    [CATransaction begin];
+    [CATransaction setValue:@YES forKey:kCATransactionDisableActions];
     self.flipCardLayer.transform = [self flipCardTransformWithProgress:progress];
+    [CATransaction commit];
     
     [self setBackgroundLayerDarknessWithProgress:progress];
 }
